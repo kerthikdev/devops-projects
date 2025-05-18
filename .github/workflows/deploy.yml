@@ -5,21 +5,26 @@ on:
     branches:
       - main  # or main
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v1
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: Setup Node.js (optional, remove if unused)
+        uses: actions/setup-node@v3
         with:
-          path: .
+          node-version: '16'
 
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v1
+      - name: Deploy to GitHub Pages 🚀
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./  # This assumes index.html is at the root
